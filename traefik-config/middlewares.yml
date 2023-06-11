@@ -1,0 +1,69 @@
+---
+
+http:
+  middlewares:
+
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+
+    secure-headers:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - PUT
+        accessControlMaxAge: 100
+        addVaryHeader: true
+        hostsProxyHeaders: "X-Forwarded-Host"
+        frameDeny: true
+        sslProxyHeaders:
+          X-Forwarded-Proto: "https"
+        browserXSSFilter: true
+        contentTypeNoSniff: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 63073200
+        forceSTSHeader: true
+        referrerPolicy: "same-origin"
+        customResponseHeaders:
+          Permissions-Policy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
+          X-Permitted-Cross-Domain-Policies: "none"
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
+          Server: ""
+
+    ipwhitelist:
+      ipWhiteList:
+        sourceRange: '{{ env "ENV_TRAEFIK_WHITELIST" | default "127.0.0.1/32" }}'
+
+    auth:
+      basicAuth:
+        realm: '{{ env "ENV_TRAEFIK_REALM" | default "traefik" }}'
+        usersFile: /run/secrets/traefik-secrets
+
+    chain-basic:
+      chain:
+        middlewares:
+          - rate-limit
+          - secure-headers
+
+    chain-whitelist:
+      chain:
+        middlewares:
+          - chain-basic
+          - ipwhitelist
+
+    chain-auth:
+      chain:
+        middlewares:
+          - chain-basic
+          - auth
+
+    chain-whitelist-auth:
+      chain:
+        middlewares:
+          - chain-whitelist
+          - auth
+
+...

@@ -1,0 +1,65 @@
+---
+
+services:
+
+  traefik:
+    container_name: traefik
+    image: traefik:v2.8.4
+    # command: moved to environment variables traefik.env
+    security_opt:
+      - "no-new-privileges:true"
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - frontend
+      - backend
+    volumes:
+      - "./traefik-config/:/config/"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      - ENV_TRAEFIK_HOST
+      - ENV_TRAEFIK_REALM
+      - ENV_TRAEFIK_WHITELIST
+    env_file:
+      - "traefik.env"
+    secrets:
+      - traefik_secrets
+    labels:
+      - "traefik.enable=true"
+      # force https and redirect http
+      - "traefik.http.routers.http-catchall.entrypoints=web"
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      # configure traefik with path prefix
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/traefik`) \
+                    || Headers(`Referer`, `https://${ENV_TRAEFIK_HOST:-localhost}/traefik/dashboard/`)"
+      - "traefik.http.middlewares.traefik-strip.stripprefix.prefixes=/traefik"
+      - "traefik.http.routers.traefik.middlewares=chain-basic@file,traefik-strip"
+      - "traefik.http.routers.traefik.service=api@internal"
+
+  whoami:
+    container_name: traefik_whoami
+    image: traefik/whoami:v1.8.0
+    networks:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/whoami`)"
+      - "traefik.http.routers.whoami.tls=true"
+
+networks:
+  frontend:
+    external: true
+  backend:
+    external: true
+
+secrets:
+  traefik_secrets:
+    file: ./.traefik_secrets.txt
+
+...

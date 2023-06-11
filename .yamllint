@@ -1,0 +1,12 @@
+---
+
+extends: default
+
+# ignore:
+#   - .direnv/
+
+rules:
+  line-length:
+    max: 140
+
+...
