@@ -27,7 +27,7 @@ services:
     env_file:
       - "traefik.env"
     secrets:
-      - traefik_secrets
+      - traefik_secret
     labels:
       - "traefik.enable=true"
       # force https and redirect http
@@ -49,15 +49,15 @@ services:
     container_name: portainer-ce
     image: portainer/portainer-ce:2.18.3-alpine
     command:
-      - '--admin-password-file=/run/secrets/portainer_secrets'
-      - '--no-analytics'
+      - '--admin-password-file=/run/secrets/portainer_admin_secret'
     networks:
       - backend
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
       - "portainer_data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
     secrets:
-      - portainer_secrets
+      - portainer_admin_secret
+      - portainer_key
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.entrypoints=websecure"
@@ -113,9 +113,11 @@ networks:
     external: true
 
 secrets:
-  traefik_secrets:
-    file: ./.traefik_secrets.txt
-  portainer_secrets:
-    file: ./.portainer_secrets.txt
+  traefik_secret:
+    file: ./.traefik_secret.txt
+  portainer_admin_secret:
+    file: ./.portainer_admin_secret.txt
+  portainer_key:
+    file: ./.portainer_key_secret.txt
 
 ...
