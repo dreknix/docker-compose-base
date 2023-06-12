@@ -48,11 +48,16 @@ services:
   portainer:
     container_name: portainer-ce
     image: portainer/portainer-ce:2.18.3-alpine
+    command:
+      - '--admin-password-file /run/secrets/portainer_secrets'
+      - '--no-analytics'
     networks:
       - backend
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "portainer_data:/data"
+    secrets:
+      - portainer_secrets
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.entrypoints=websecure"
@@ -110,5 +115,7 @@ networks:
 secrets:
   traefik_secrets:
     file: ./.traefik_secrets.txt
+  portainer_secrets:
+    file: ./.portainer_secrets.txt
 
 ...
