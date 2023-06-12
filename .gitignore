@@ -1,3 +1,4 @@
 .env
 traefik.env
 .traefik_secrets.txt
+.portainer_secrets.txt
