@@ -57,7 +57,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     secrets:
       - portainer_admin_secret
-      - portainer_key
+      - portainer
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.entrypoints=websecure"
@@ -117,7 +117,7 @@ secrets:
     file: ./.traefik_secret.txt
   portainer_admin_secret:
     file: ./.portainer_admin_secret.txt
-  portainer_key:
+  portainer:
     file: ./.portainer_key_secret.txt
 
 ...
