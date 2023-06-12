@@ -35,13 +35,10 @@ services:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      # configure letsencrypt
+      # configure traefik with path prefix and letencrypt
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.tls.certresolver=leresolver"
-      # configure traefik with path prefix
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/traefik`) \
                     || Headers(`Referer`, `https://${ENV_TRAEFIK_HOST:-localhost}/traefik/dashboard/`)"
       - "traefik.http.middlewares.traefik-strip.stripprefix.prefixes=/traefik"
