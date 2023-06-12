@@ -16,9 +16,12 @@ services:
       - backend
     volumes:
       - "./traefik-config/:/config/"
+      - "./traefik-certs/:/certs/"
+      - "./traefik-certs/acme.json:/etc/letsencrypt/acme.json"
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       - ENV_TRAEFIK_HOST
+      - ENV_TRAEFIK_EMAIL
       - ENV_TRAEFIK_REALM
       - ENV_TRAEFIK_WHITELIST
     env_file:
@@ -32,6 +35,10 @@ services:
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      # configure letsencrypt
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=leresolver"
       # configure traefik with path prefix
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.tls=true"
