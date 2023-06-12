@@ -97,6 +97,9 @@ services:
       - "traefik.http.routers.whoami.tls.certresolver=leresolver"
       - "traefik.http.routers.whoami.middlewares=chain-basic@file"
 
+volumes:
+  portainer_data:
+
 networks:
   frontend:
     external: true
