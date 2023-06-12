@@ -45,6 +45,45 @@ services:
       - "traefik.http.routers.traefik.middlewares=chain-basic@file,traefik-strip"
       - "traefik.http.routers.traefik.service=api@internal"
 
+  portainer:
+    container_name: portainer-ce
+    image: portainer/portainer-ce:2.18.3-alpine
+    networks:
+      - backend
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "portainer_data:/data"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.routers.portainer.tls.certresolver=leresolver"
+      - "traefik.http.routers.portainer.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/portainer`)"
+      - "traefik.http.middlewares.portainer-strip.stripprefix.prefixes=/portainer"
+      - "traefik.http.middlewares.portainer-strip.stripprefix.forceSlash=true"
+      - "traefik.http.routers.portainer.middlewares=chain-whitelist@file,portainer-strip"
+      - "traefik.http.routers.portainer.service=portainer"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+  nginx:
+    container_name: traefik_nginx
+    image: nginx:1.25.0-alpine
+    networks:
+      - backend
+    volumes:
+      - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
+      - "./nginx/html:/etc/nginx/html"
+      - "./nginx/error-pages:/usr/share/nginx/error-pages"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.entrypoints=websecure"
+      - "traefik.http.routers.nginx.tls=true"
+      - "traefik.http.routers.nginx.tls.certresolver=leresolver"
+      - "traefik.http.routers.nginx.rule=HostRegexp(`{host:.+}`)"
+      - "traefik.http.routers.nginx.priority=1"
+      - "traefik.http.routers.nginx.middlewares=chain-basic@file"
+      - "traefik.http.services.error-pages-service.loadbalancer.server.port=80"
+
   whoami:
     container_name: traefik_whoami
     image: traefik/whoami:v1.9.0
@@ -55,6 +94,8 @@ services:
       - "traefik.http.routers.whoami.entrypoints=websecure"
       - "traefik.http.routers.whoami.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/whoami`)"
       - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=leresolver"
+      - "traefik.http.routers.whoami.middlewares=chain-basic@file"
 
 networks:
   frontend:
