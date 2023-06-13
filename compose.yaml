@@ -3,7 +3,7 @@
 services:
 
   traefik:
-    container_name: traefik
+    container_name: base_traefik
     image: traefik:v2.10.1
     # command: moved to environment variables traefik.env
     security_opt:
@@ -46,14 +46,14 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
 
   portainer:
-    container_name: portainer-ce
+    container_name: base_portainer
     image: portainer/portainer-ce:2.18.3-alpine
     command:
       - '--admin-password-file=/run/secrets/portainer_admin_secret'
     networks:
       - backend
     volumes:
-      - "portainer_data:/data"
+      - "base_portainer_data:/data"
       - "/var/run/docker.sock:/var/run/docker.sock"
     secrets:
       - portainer_admin_secret
@@ -71,7 +71,7 @@ services:
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
   nginx:
-    container_name: traefik_nginx
+    container_name: base_nginx
     image: nginx:1.25.0-alpine
     networks:
       - backend
@@ -90,7 +90,7 @@ services:
       - "traefik.http.services.error-pages-service.loadbalancer.server.port=80"
 
   whoami:
-    container_name: traefik_whoami
+    container_name: base_whoami
     image: traefik/whoami:v1.9.0
     networks:
       - backend
@@ -103,7 +103,7 @@ services:
       - "traefik.http.routers.whoami.middlewares=chain-basic@file"
 
 volumes:
-  portainer_data:
+  base_portainer_data:
     external: true
 
 networks:
