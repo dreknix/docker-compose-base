@@ -72,7 +72,7 @@ services:
 
   nginx:
     container_name: base_nginx
-    image: nginx:1.25.0-alpine
+    image: nginx:1.25.1-alpine
     networks:
       - backend
     volumes:
