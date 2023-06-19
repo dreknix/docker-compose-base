@@ -9,8 +9,8 @@ services:
     security_opt:
       - "no-new-privileges:true"
     ports:
-      - "80:80"
-      - "443:443"
+      - "${ENV_TRAEFIK_IP:-}:80:80"
+      - "${ENV_TRAEFIK_IP:-}:443:443"
     networks:
       - frontend
       - backend
@@ -21,6 +21,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       - ENV_TRAEFIK_HOST
+      - ENV_TRAEFIK_IP
       - ENV_TRAEFIK_EMAIL
       - ENV_TRAEFIK_REALM
       - ENV_TRAEFIK_WHITELIST
