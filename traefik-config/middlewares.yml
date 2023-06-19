@@ -33,6 +33,13 @@ http:
           X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
           Server: ""
 
+    error-pages:
+      errors:
+        status: 400-599
+        service: error-pages-service@docker
+        query: https://{{ env "ENV_TRAEFIK_HOST" }}/{status}.html
+
+
     ipwhitelist:
       ipWhiteList:
         sourceRange: '{{ env "ENV_TRAEFIK_WHITELIST" | default "127.0.0.1/32" }}'
