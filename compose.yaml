@@ -49,6 +49,8 @@ services:
   portainer:
     container_name: base_portainer
     image: portainer/portainer-ce:2.18.3-alpine
+    security_opt:
+      - "no-new-privileges:true"
     command:
       - '--admin-password-file=/run/secrets/portainer_admin_secret'
     networks:
@@ -74,6 +76,8 @@ services:
   nginx:
     container_name: base_nginx
     image: nginx:1.25.1-alpine
+    security_opt:
+      - "no-new-privileges:true"
     networks:
       - backend
     volumes:
@@ -96,6 +100,8 @@ services:
   whoami:
     container_name: base_whoami
     image: traefik/whoami:v1.9.0
+    security_opt:
+      - "no-new-privileges:true"
     networks:
       - backend
     labels:
