@@ -81,6 +81,7 @@ services:
     networks:
       - backend
     volumes:
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
       - "./nginx/html:/etc/nginx/html"
       - "./nginx/error-pages:/usr/share/nginx/error-pages"
