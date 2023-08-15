@@ -47,7 +47,7 @@ http:
     auth:
       basicAuth:
         realm: '{{ env "ENV_TRAEFIK_REALM" | default "traefik" }}'
-        usersFile: /run/secrets/traefik-secrets
+        usersFile: /run/secrets/traefik_secrets
 
     chain-basic:
       chain:
