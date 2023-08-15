@@ -36,10 +36,8 @@ http:
     error-pages:
       errors:
         status: 400-599
-        # TODO: currently not working
-        # service: error-pages-service@docker
+        service: error-pages-service@docker
         query: https://{{ env "ENV_TRAEFIK_HOST" }}/{status}.html
-
 
     ipwhitelist:
       ipWhiteList:
