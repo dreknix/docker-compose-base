@@ -28,7 +28,7 @@ services:
     env_file:
       - "traefik.env"
     secrets:
-      - traefik_secret
+      - traefik_secrets
     labels:
       - "traefik.enable=true"
       # force https and redirect http
@@ -123,8 +123,8 @@ networks:
     external: true
 
 secrets:
-  traefik_secret:
-    file: ./.traefik_secret.txt
+  traefik_secrets:
+    file: ./.traefik_secrets.txt
   portainer_admin_secret:
     file: ./.portainer_admin_secret.txt
   portainer:

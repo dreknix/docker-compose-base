@@ -42,8 +42,8 @@ Add users for the basic authentication of traefik. The default user is `traefik`
 with the same password.
 
 ```console
-$ cp .traefik_secret.txt.dist .traefik_secret.txt
-$ nano .traefik_secret.txt
+$ cp .traefik_secrets.txt.dist .traefik_secrets.txt
+$ nano .traefik_secrets.txt
 ```
 
 Each line in this file is create via `htpasswd -nbB <user> "<pass>"`.
