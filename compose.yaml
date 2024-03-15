@@ -24,7 +24,7 @@ services:
       - ENV_TRAEFIK_IP
       - ENV_TRAEFIK_EMAIL
       - ENV_TRAEFIK_REALM
-      - ENV_TRAEFIK_WHITELIST
+      - ENV_TRAEFIK_IPALLOWLIST
     env_file:
       - "traefik.env"
     secrets:
@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.traefik.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/traefik`) \
                     || Headers(`Referer`, `https://${ENV_TRAEFIK_HOST:-localhost}/traefik/dashboard/`)"
       - "traefik.http.middlewares.traefik-strip.stripprefix.prefixes=/traefik"
-      - "traefik.http.routers.traefik.middlewares=chain-whitelist-auth@file,traefik-strip,error-pages@file"
+      - "traefik.http.routers.traefik.middlewares=chain-ipallowlist-auth@file,traefik-strip,error-pages@file"
       - "traefik.http.routers.traefik.service=api@internal"
 
   portainer:
@@ -69,7 +69,7 @@ services:
       - "traefik.http.routers.portainer.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/portainer`)"
       - "traefik.http.middlewares.portainer-strip.stripprefix.prefixes=/portainer"
       - "traefik.http.middlewares.portainer-strip.stripprefix.forceSlash=true"
-      - "traefik.http.routers.portainer.middlewares=chain-whitelist@file,portainer-strip,error-pages@file"
+      - "traefik.http.routers.portainer.middlewares=chain-ipallowlist@file,portainer-strip,error-pages@file"
       - "traefik.http.routers.portainer.service=portainer"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
@@ -111,7 +111,7 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/whoami`)"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.routers.whoami.tls.certresolver=leresolver"
-      - "traefik.http.routers.whoami.middlewares=chain-whitelist@file,error-pages@file"
+      - "traefik.http.routers.whoami.middlewares=chain-ipallowlist@file,error-pages@file"
 
 volumes:
   base_portainer_data:

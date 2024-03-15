@@ -39,9 +39,9 @@ http:
         service: error-pages-service@docker
         query: https://{{ env "ENV_TRAEFIK_HOST" }}/{status}.html
 
-    ipwhitelist:
-      ipWhiteList:
-        sourceRange: '{{ env "ENV_TRAEFIK_WHITELIST" | default "127.0.0.1/32" }}'
+    ipallowlist:
+      ipallowList:
+        sourceRange: '{{ env "ENV_TRAEFIK_IPALLOWLIST" | default "127.0.0.1/32" }}'
 
     auth:
       basicAuth:
@@ -54,11 +54,11 @@ http:
           - rate-limit
           - secure-headers
 
-    chain-whitelist:
+    chain-ipallowlist:
       chain:
         middlewares:
           - chain-basic
-          - ipwhitelist
+          - ipallowlist
 
     chain-auth:
       chain:
@@ -66,10 +66,10 @@ http:
           - chain-basic
           - auth
 
-    chain-whitelist-auth:
+    chain-ipallowlist-auth:
       chain:
         middlewares:
-          - chain-whitelist
+          - chain-ipallowlist
           - auth
 
 ...
