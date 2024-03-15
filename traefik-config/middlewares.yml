@@ -37,7 +37,8 @@ http:
       errors:
         status: 400-599
         service: error-pages-service@docker
-        query: https://{{ env "ENV_TRAEFIK_HOST" }}/{status}.html
+        # query: https://{{ env "ENV_TRAEFIK_HOST" }}/{status}.html
+        query: /{status}.html
 
     ipallowlist:
       ipallowList:
