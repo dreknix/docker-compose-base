@@ -102,6 +102,61 @@ The following services are included in this instance:
 * `https://${ENV_TRAEFIK_HOST}/portainer/`
 * `https://${ENV_TRAEFIK_HOST}/whoami`
 
+## Setup with Ansible
+
+### Playbook
+
+``` yaml
+- name: Deploy Docker compose instance Traefik, Portainer, ...
+  hosts: docker_base
+  tasks:
+    - name: Import role 'dreknix.docker_deploy'
+      ansible.builtin.import_role:
+        name: dreknix.docker_deploy
+      vars:
+        docker_deploy_name: base
+        docker_deploy_git_repo: https://github.com/dreknix/docker-compose-base
+        docker_deploy_file_dirs:
+          - "{{ playbook_dir }}/files/base"
+        docker_deploy_template_dirs:
+          - "{{ playbook_dir }}/templates/base/all"
+          - "{{ playbook_dir }}/templates/base/{{ inventory_hostname }}"
+        docker_deploy_touched_files:
+          - path: traefik-certs/acme.json
+            mode: u=rw,go=
+        docker_deploy_delete_unmanaged_files: true
+        docker_deploy_volumes:
+          - base_portainer_data
+        docker_deploy_networks:
+          - frontend
+          - backend
+```
+
+### Files
+
+* `files/base/nginx/html/favicon.ico`
+
+### Templates
+
+``` text title="templates/base/all/.env.j2"
+ENV_TRAEFIK_HOST='{{ docker_deploy_base_traefik_host | mandatory }}'
+
+ENV_TRAEFIK_EMAIL='{{ docker_deploy_base_traefik_email | default("dreknix@proton.me) }}'
+
+ENV_TRAEFIK_REALM='{{ docker_deploy_base_traefik_realm | default("traefik") }}'
+
+ENV_TRAEFIK_IPALLOWLIST='{{ docker_deploy_base_traefik_ipallowlist | default("127.0.0.1/8") }}'
+```
+
+* templates/base/all/.portainer_admin_secret.txt.j2
+* templates/base/all/.portainer_key_secret.txt.j2
+
+* templates/base/all/.traefik_secrets.txt.j2
+* templates/base/all/traefik.env.j2
+* templates/base/all/traefik-config/example.yaml.j2
+
+* templates/base/all/nginx/html/index.html.j2
+
 ## License
 
 [MIT](https://github.com/dreknix/docker-compose-base/blob/main/LICENSE)
