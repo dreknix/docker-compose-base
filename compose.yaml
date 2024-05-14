@@ -41,7 +41,7 @@ services:
       - "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.tls.certresolver=leresolver"
       - "traefik.http.routers.traefik.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/traefik`) \
-                    || Headers(`Referer`, `https://${ENV_TRAEFIK_HOST:-localhost}/traefik/dashboard/`)"
+                    || Header(`Referer`, `https://${ENV_TRAEFIK_HOST:-localhost}/traefik/dashboard/`)"
       - "traefik.http.middlewares.traefik-strip.stripprefix.prefixes=/traefik"
       - "traefik.http.routers.traefik.middlewares=chain-ipallowlist-auth@file,traefik-strip,error-pages@file"
       - "traefik.http.routers.traefik.service=api@internal"
