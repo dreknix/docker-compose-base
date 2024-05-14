@@ -33,7 +33,7 @@ services:
       - "traefik.enable=true"
       # force https and redirect http
       - "traefik.http.routers.http-catchall.entrypoints=web"
-      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.rule=HostRegexp(`.+`)"
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       # configure traefik with path prefix and letencrypt
@@ -93,7 +93,7 @@ services:
       - "traefik.http.routers.nginx.entrypoints=websecure"
       - "traefik.http.routers.nginx.tls=true"
       - "traefik.http.routers.nginx.tls.certresolver=leresolver"
-      - "traefik.http.routers.nginx.rule=HostRegexp(`{host:.+}`)"
+      - "traefik.http.routers.nginx.rule=HostRegexp(`.+`)"
       - "traefik.http.routers.nginx.priority=1"
       - "traefik.http.routers.nginx.middlewares=chain-basic@file"
       - "traefik.http.services.error-pages-service.loadbalancer.server.port=80"
