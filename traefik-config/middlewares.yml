@@ -10,6 +10,9 @@ http:
 
     secure-headers:
       headers:
+        # Workaround a bug in OnlyOffice, see the issue tracker: https://github.com/ONLYOFFICE/DocumentServer/issues/2186
+        # add "upgrade-insecure-requests;" to change http into https requests
+        contentSecurityPolicy: "upgrade-insecure-requests;"
         accessControlAllowMethods:
           - GET
           - OPTIONS
