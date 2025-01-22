@@ -53,8 +53,8 @@ For additional dynamic configurations create a file in `traefik-config/`.
 Create the networks:
 
 ``` console
-docker create network frontend
-docker create network backend
+docker network create frontend
+docker network create backend
 ```
 
 ## Portainer
@@ -80,7 +80,7 @@ nano .portainer_key_secret.txt
 Create the volume:
 
 ``` console
-docker create volume base_portainer_data
+docker volume create base_portainer_data
 ```
 
 ## Start
