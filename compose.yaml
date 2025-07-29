@@ -4,7 +4,7 @@ services:
 
   traefik:
     container_name: base_traefik
-    image: traefik:v3.3.5
+    image: traefik:v3.5.0
     # command: moved to environment variables traefik.env
     security_opt:
       - "no-new-privileges:true"
@@ -48,7 +48,7 @@ services:
 
   portainer:
     container_name: base_portainer
-    image: portainer/portainer-ce:2.29.0-alpine
+    image: portainer/portainer-ce:2.32.0-alpine
     security_opt:
       - "no-new-privileges:true"
     command:
@@ -75,7 +75,7 @@ services:
 
   nginx:
     container_name: base_nginx
-    image: nginx:1.25.1-alpine3.17-slim
+    image: nginx:1.29.0-alpine3.22-slim
     security_opt:
       - "no-new-privileges:true"
     networks:
