@@ -75,7 +75,7 @@ services:
 
   nginx:
     container_name: base_nginx
-    image: nginx:1.29.1-alpine3.22-slim
+    image: nginx:1.29.2-alpine3.22-slim
     security_opt:
       - "no-new-privileges:true"
     networks:
