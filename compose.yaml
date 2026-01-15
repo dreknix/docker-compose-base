@@ -17,7 +17,6 @@ services:
     volumes:
       - "./traefik-config/:/config/"
       - "./traefik-certs/:/certs/"
-      - "./traefik-certs/acme.json:/etc/letsencrypt/acme.json"
       - "/var/run/docker.sock:/var/run/docker.sock"
     environment:
       - ENV_TRAEFIK_HOST
