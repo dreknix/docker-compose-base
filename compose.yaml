@@ -47,7 +47,7 @@ services:
 
   portainer:
     container_name: base_portainer
-    image: portainer/portainer-ce:2.37.0-alpine
+    image: portainer/portainer-ce:2.38.1-alpine
     security_opt:
       - "no-new-privileges:true"
     command:
