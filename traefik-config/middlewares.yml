@@ -27,13 +27,14 @@ http:
         contentTypeNoSniff: true
         stsIncludeSubdomains: true
         stsPreload: true
-        stsSeconds: 63073200
+        stsSeconds: 15552000
         forceSTSHeader: true
         referrerPolicy: "same-origin"
         customResponseHeaders:
           Permissions-Policy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
           X-Permitted-Cross-Domain-Policies: "none"
-          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
+          X-Robots-Tag: "noindex,nofollow"
+          X-Frame-Options: "SAMEORIGIN"
           Server: ""
 
     error-pages:
