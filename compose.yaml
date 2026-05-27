@@ -82,7 +82,7 @@ services:
       - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "./nginx/conf.d:/etc/nginx/conf.d"
       - "./nginx/html:/etc/nginx/html"
-      - "./nginx/share:/usr/share/nginx"
+      - "./nginx/share:/usr/share/nginx/html"
     environment:
       # You can silence entrypoint logs by setting this environment variable
       - "NGINX_ENTRYPOINT_QUIET_LOGS=1"
