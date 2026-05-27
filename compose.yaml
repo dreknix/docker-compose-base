@@ -94,7 +94,7 @@ services:
       - "traefik.http.routers.nginx.rule=HostRegexp(`.+`)"
       - "traefik.http.routers.nginx.priority=1"
       - "traefik.http.routers.nginx.middlewares=chain-basic@file"
-      - "traefik.http.services.error-pages-service.loadbalancer.server.port=80"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
 
   whoami:
     container_name: base_whoami

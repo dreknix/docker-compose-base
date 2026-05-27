@@ -1,8 +1,6 @@
 ---
-
 http:
   middlewares:
-
     rate-limit:
       rateLimit:
         average: 100
@@ -39,9 +37,8 @@ http:
 
     error-pages:
       errors:
-        status: 400-599
-        service: error-pages-service@docker
-        # query: https://{{ env "ENV_TRAEFIK_HOST" }}/{status}.html
+        status: 400,404,502
+        service: nginx@docker
         query: /{status}.html
 
     ipallowlist:
@@ -76,5 +73,4 @@ http:
         middlewares:
           - chain-ipallowlist
           - auth
-
 ...
