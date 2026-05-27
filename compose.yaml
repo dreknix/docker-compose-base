@@ -70,9 +70,10 @@ services:
       - "traefik.http.routers.portainer.service=portainer"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
+  # use stable version: see https://nginx.org/
   nginx:
     container_name: base_nginx
-    image: nginx:1.29.3-alpine3.22-slim
+    image: nginx:1.30.2-alpine3.23-slim
     security_opt:
       - "no-new-privileges:true"
     networks:
