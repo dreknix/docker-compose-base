@@ -12,6 +12,8 @@ services:
     networks:
       - frontend
       - backend
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - "./traefik-config/:/config/"
       - "./traefik-certs/:/certs/"
@@ -37,8 +39,7 @@ services:
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.tls.certresolver=leresolver"
-      - "traefik.http.routers.traefik.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/traefik`) \
-                    || Header(`Referer`, `https://${ENV_TRAEFIK_HOST:-localhost}/traefik/dashboard/`)"
+      - "traefik.http.routers.traefik.rule=Host(`${ENV_TRAEFIK_HOST:-localhost}`) && PathPrefix(`/traefik`) || Header(`Referer`, `https://${ENV_TRAEFIK_HOST:-localhost}/traefik/dashboard/`)"
       - "traefik.http.middlewares.traefik-strip.stripprefix.prefixes=/traefik"
       - "traefik.http.routers.traefik.middlewares=chain-ipallowlist-auth@file,traefik-strip,error-pages@file"
       - "traefik.http.routers.traefik.service=api@internal"
