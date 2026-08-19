@@ -2,7 +2,7 @@
 services:
   traefik:
     container_name: base_traefik
-    image: traefik:v3.7.10
+    image: traefik:v3.7.11
     # command: moved to environment variables traefik.env
     security_opt:
       - "no-new-privileges:true"
