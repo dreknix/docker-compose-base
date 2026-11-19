@@ -7,8 +7,9 @@ services:
     security_opt:
       - "no-new-privileges:true"
     ports:
-      - "${ENV_TRAEFIK_IP:-}:80:80"
-      - "${ENV_TRAEFIK_IP:-}:443:443"
+      - "${ENV_TRAEFIK_IP:-}:80:80/tcp"
+      - "${ENV_TRAEFIK_IP:-}:443:443/tcp"
+      - "${ENV_TRAEFIK_IP:-}:443:443/udp"
     networks:
       - frontend
       - backend
