@@ -75,7 +75,7 @@ services:
   # use stable version: see https://nginx.org/
   nginx:
     container_name: base_nginx
-    image: nginx:1.31.9-alpine3.24-slim
+    image: nginx:1.31.10-alpine3.24-slim
     security_opt:
       - "no-new-privileges:true"
     networks:
